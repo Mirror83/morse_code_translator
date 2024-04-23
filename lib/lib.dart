@@ -69,7 +69,7 @@ class MorseCodeTree {
   /// If [codeSequence] is invalid, null is returned.
   ///
   ///
-  /// Code sequence shouldbe a string of morse code symbols separated
+  /// Code sequence should be a string of morse code symbols separated
   /// by a space for each character of a word and two spaces between words in a
   /// sentence.
   ///
@@ -110,6 +110,50 @@ class MorseCodeTree {
         }
 
         output += current.data;
+      }
+
+      output += " ";
+    }
+
+    return output.trimRight();
+  }
+
+  /// Translates [sentence] into a morse code sequence.
+  ///
+  /// Returns null if the sentence contains characters that are not among the
+  /// 26 letters of the alphabet (ignoring case)
+  ///
+  /// The morse code sequence returned is as described in the comments for
+  /// [MorseCodeTree.translate] above.
+  ///
+  /// Examples
+  /// ```dart
+  /// final morseCodeTree = MorseCodeTree();
+  ///
+  /// morseCodeTree.encode("sos");
+  /// >>> "... --- ..."
+  ///
+  /// morseCodeTree.encode("Trees are fun");
+  /// >>> "- .-. . . ...  .- .-. .  ..-. ..- -."
+  ///
+  /// morseCodeTree.encode("Hi!");
+  /// >>> null
+  ///
+  /// ```
+  String? encode(String sentence) {
+    String output = "";
+
+    final words = sentence.toLowerCase().split(" ");
+
+    for (final word in words) {
+      for (int i = 0; i < word.length; i++) {
+        final character = word[i];
+        if (_sequenceMap.containsKey(character)) {
+          output += _sequenceMap[character]!;
+          output += " ";
+        } else {
+          return null;
+        }
       }
 
       output += " ";
